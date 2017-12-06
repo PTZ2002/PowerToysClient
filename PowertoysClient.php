@@ -3,15 +3,15 @@
 /**
  * Power toys client
  *
- * Custom implementation for Plesk module integration
  * Implements client to manage powertoys licences with powertoys rest api server
  *
  * @author Palecian Tamas <paleciantamas@gmail.com>
  * @version 1.0
  */
-class Modules_PowerToys_PowertoysClient
+class PowerToysClient
 {
-    const ENTITY_LICENCE    = 'licenses';
+    const ENTITY_LICENCE 		= 'licenses';
+    const ENTITY_CUSTOMER 	= 'customers';
 
     /**
      * Access Token
@@ -64,7 +64,94 @@ class Modules_PowerToys_PowertoysClient
         $this->accessToken = $accessToken;
         $this->version     = $version;
 
-        ($serverAddress != null) ? $this->serverAddress = $serverAddress : $this->serverAddress;
+        ($serverAddress != null) ? $this->serverAddress = $serverAddress : '';
+    }
+
+    /**
+     * Find licence based on unique id
+     *
+     * @param string $licenceUID
+     *
+     * @return array || null
+     */
+    public function findLicence($licenceUID)
+    {
+        // Generate current url with the requested entity
+        $this->_generateServerUrl($this->version, self::ENTITY_LICENCE);
+        $this->currentApiCall = $this->currentApiCall . '/' . $licenceUID;
+
+        $result = $this->_makeGet();
+        return $result;
+    }
+
+    /**
+     * Find all licences
+     *
+     * @return array || null
+     */
+    public function findAllLicences()
+    {
+        $this->_generateServerUrl($this->version, self::ENTITY_LICENCE);
+
+        $result = $this->_makeGet();
+        return $result;
+    }
+
+    /**
+     * Create licence based on requested parameters
+     *
+     * @param string $customerUID   The customer unique id
+     * @param string $licenceType   The licence type to create
+     * @param string $serverAddress The server address of the licence
+     *
+     * @return array || null
+     */
+    public function createLicence($customerUID, $licenceType, $serverAddress)
+    {
+        $this->_generateServerUrl($this->version, self::ENTITY_LICENCE);
+
+        // Generate form array
+        $postData = [
+          'customer_uid' => $customerUID,
+          'licence_type' => $licenceType,
+          'server_address' => $serverAddress
+        ];
+
+        $result = $this->_makePost($postData);
+        return $result;
+    }
+
+    /**
+     * Update licence based on requested parameters
+     *
+     * @param string $licenceUID      The licence unique id
+     * @param array  $licencePutData  The licence put data
+     *
+     * @return array || null
+     */
+    public function updateLicence($licenceUID, $licencePutData)
+    {
+        $this->_generateServerUrl($this->version, self::ENTITY_LICENCE);
+        $this->currentApiCall = $this->currentApiCall . '/' . $licenceUID;
+
+        $result = $this->_makePut($licencePost);
+        return $result;
+    }
+
+    /**
+     * Delete licence based on unique id
+     *
+     * @param string $licenceUID
+     *
+     * @return array || null
+     */
+    public function deleteLicence($licenceUID)
+    {
+        $this->_generateServerUrl($this->version, self::ENTITY_LICENCE);
+        $this->currentApiCall = $this->currentApiUrl . '/' . $licenceUID;
+
+        $result = $this->_makeDelete();
+        return $result;
     }
 
     /**
@@ -143,6 +230,7 @@ class Modules_PowerToys_PowertoysClient
     private function _makePost($postData)
     {
         $curl = curl_init($this->currentApiCall);
+
         $dataString = http_build_query($postData);
 
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
@@ -240,7 +328,7 @@ class Modules_PowerToys_PowertoysClient
      */
     private function _generateServerUrl($version, $entity)
     {
-        $this->currentApiCall = $this->serverAddress . '/v' . $version . '/' . $entity;
+        $this->$currentApiCall = $this->serverAddress . '/v' . $version . '/' . $entity;
     }
 
     /**
