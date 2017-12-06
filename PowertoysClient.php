@@ -10,7 +10,7 @@
  */
 class PowerToysClient
 {
-    const ENTITY_LICENCE 		= 'licenses';
+    const ENTITY_LICENCE    = 'licenses';
     const ENTITY_CUSTOMER 	= 'customers';
 
     /**
