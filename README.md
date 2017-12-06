@@ -26,7 +26,7 @@ then copy the library there.
 <b>Whoala you can use it in your extension</b>
 
 # Use powertoys client in your extension
-To use powertoys client extension you just neew to do the following steps
+To use powertoys client extension you just need to do the following step
 
 $powertoysClient = new Modules_<b>{EXTENSION_ID}</b>_PowertoysClient(<b>{hash}</b>, <b>{version}</b>);
 
