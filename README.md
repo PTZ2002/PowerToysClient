@@ -31,13 +31,13 @@ To use powertoys client extension you just neew to do the following steps
 $powertoysClient = new Modules_<b>{EXTENSION_ID}</b>_PowertoysClient(<b>{hash}</b>, <b>{version}</b>);
 
 
-#Issues
+# Issues
 If you have any issue please create an issue and I will try to help you out in the next 48 hours.
 
-#Bugfix & Update
+# Bugfixing
 If you have any bug fixes done or any updates that would help this client please feel free to create a pull request.
 
-Thank you,
+Thank you,<br/>
 Tamas
 
 
