@@ -68,6 +68,84 @@ class PowerToysClient
     }
 
     /**
+     * Find customer based on unique id
+     *
+     * @param string $customerUID
+     *
+     * @return array || null
+     */
+    public function findCustomer($customerUID)
+    {
+        // Generate current url with the requested entity
+        $this->_generateServerUrl($this->version, self::ENTITY_CUSTOMER);
+        $this->currentApiCall = $this->currentApiCall . '/' . $customerUID;
+
+        $result = $this->_makeGet();
+        return $result;
+    }
+
+    /**
+     * Find all customers
+     *
+     * @return array || null
+     */
+    public function findAllCustomers()
+    {
+        $this->_generateServerUrl($this->version, self::ENTITY_CUSTOMER);
+
+        $result = $this->_makeGet();
+        return $result;
+    }
+
+    /**
+     * Create customer based on post data
+     *
+     * @param string $postData The client post data
+     *
+     * @return array || null
+     */
+    public function createCustomer($postData)
+    {
+        $this->_generateServerUrl($this->version, self::ENTITY_CUSTOMER);
+
+        $result = $this->_makePost($postData);
+        return $result;
+    }
+
+    /**
+     * Update customer based on requested parameters
+     *
+     * @param string $customerUID     The customer unique id
+     * @param array  $putData         The customer put data
+     *
+     * @return array || null
+     */
+    public function updateCustomer($customerUID, $putData)
+    {
+        $this->_generateServerUrl($this->version, self::ENTITY_CUSTOMER);
+        $this->currentApiCall = $this->currentApiCall . '/' . $customerUID;
+
+        $result = $this->_makePut($putData);
+        return $result;
+    }
+
+    /**
+     * Delete customer based on unique id
+     *
+     * @param string $customerUID
+     *
+     * @return array || null
+     */
+    public function deleteCustomer($customerUID)
+    {
+        $this->_generateServerUrl($this->version, self::ENTITY_LICENCE);
+        $this->currentApiCall = $this->currentApiUrl . '/' . $customerUID;
+
+        $result = $this->_makeDelete();
+        return $result;
+    }
+
+    /**
      * Find licence based on unique id
      *
      * @param string $licenceUID
@@ -134,7 +212,7 @@ class PowerToysClient
         $this->_generateServerUrl($this->version, self::ENTITY_LICENCE);
         $this->currentApiCall = $this->currentApiCall . '/' . $licenceUID;
 
-        $result = $this->_makePut($licencePost);
+        $result = $this->_makePut($licencePutData);
         return $result;
     }
 
@@ -188,6 +266,28 @@ class PowerToysClient
     {
         $this->_generateServerUrl($this->version, self::ENTITY_LICENCE);
         $this->currentApiCall = $this->currentApiCall . '/activate-licence';
+
+        $licencePost = [
+          'licence_key' => $licenceKey,
+          'server_address' => $serverIpAddress
+        ];
+
+        $result = $this->_makePost($licencePost);
+        return $result;
+    }
+
+    /**
+     * Deactivate licence based on licence key and server ip address
+     *
+     * @param string $licenceKey      The unique licence key
+     * @param string $serverIpAddress The server ip address
+     *
+     * @return array || null
+     */
+    public function deactivateLicence($licenceKey, $serverIpAddress)
+    {
+        $this->_generateServerUrl($this->version, self::ENTITY_LICENCE);
+        $this->currentApiCall = $this->currentApiCall . '/deactivate-licence';
 
         $licencePost = [
           'licence_key' => $licenceKey,
