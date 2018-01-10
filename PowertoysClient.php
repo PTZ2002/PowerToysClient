@@ -428,7 +428,7 @@ class PowerToysClient
      */
     private function _generateServerUrl($version, $entity)
     {
-        $this->$currentApiCall = $this->serverAddress . '/v' . $version . '/' . $entity;
+        $this->currentApiCall = $this->serverAddress . '/v' . $version . '/' . $entity;
     }
 
     /**
